@@ -9,6 +9,7 @@
   "author": "Vincenzo Riccio",
   "license": "ISC",
   "dependencies": {
-    "sequelize": "^6.37.6"
+    "sequelize": "^6.37.6",
+    "sqlite3": "^5.1.7"
   }
 }
