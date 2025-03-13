@@ -6,7 +6,7 @@ export const ideaRouter = express.Router();
 
 /**
  * @swagger
- * /ideas:
+ * /idea:
  *   post:
  *     summary: Crea una nuova idea
  *     description: Permette la creazione di una nuova idea, assicurandosi che non superi la lunghezza massima consentita.
