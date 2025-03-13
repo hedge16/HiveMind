@@ -1,4 +1,4 @@
-import { User } from "../db/db_create.js";
+import { User } from "../db/db.js";
 import Jwt from "jsonwebtoken";
 
 

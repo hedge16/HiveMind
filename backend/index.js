@@ -4,7 +4,8 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUI from 'swagger-ui-express';
-import {authenticationRouter} from './routes/authenticationRouter.js';
+import {authenticationRouter} from './routes/AuthenticationRouter.js';
+import { enforceAuthentication } from "./middleware/Authorization.js";
 
 const app = express();
 const PORT = 3000;
@@ -42,7 +43,8 @@ const swaggerSpec = swaggerJSDoc({
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 
 app.use(authenticationRouter);
+app.use(enforceAuthentication);
 
 app.listen(PORT);
 
-console.log(`Server running at http://localhost:${PORT}/`);
+console.log(`Server running on port: ${PORT}`);

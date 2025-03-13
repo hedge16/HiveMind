@@ -13,7 +13,10 @@ export function createIdeas (database){
         },
         description: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: false,
+            validate: {
+                len: [0, 400]
+            }
         }
     })
 };
