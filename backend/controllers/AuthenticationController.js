@@ -1,3 +1,4 @@
+"use strict";
 import { User } from "../db/db.js";
 import Jwt from "jsonwebtoken";
 

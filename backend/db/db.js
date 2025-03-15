@@ -1,3 +1,4 @@
+"use strict";
 import { Sequelize } from "sequelize";
 import { createUsers } from "../models/User.js";
 import { createIdeas } from "../models/Idea.js";
@@ -17,11 +18,29 @@ createRatings(database);
 
 
 export const { User, Idea, Rating } = database.models;
+
+
 User.hasMany(Idea);
 Idea.belongsTo(User);
 Idea.hasMany(Rating);
 Rating.belongsTo(Idea);
 Rating.belongsTo(User);
+
+Idea.addScope('withVotes', {
+    attributes: {
+        include: [
+            [Sequelize.fn('SUM', Sequelize.literal('CASE WHEN Ratings.vote = 1 THEN 1 ELSE 0 END')), 'totalUpvotes'],
+            [Sequelize.fn('SUM', Sequelize.literal('CASE WHEN Ratings.vote = -1 THEN 1 ELSE 0 END')), 'totalDownvotes'],
+            [Sequelize.literal('SUM(CASE WHEN Ratings.vote = 1 THEN 1 ELSE 0 END) / NULLIF(SUM(CASE WHEN Ratings.vote = -1 THEN 1 ELSE 0 END), 0)'), 'score'],
+            [Sequelize.literal('COUNT(Ratings.id)'), 'TotalVotes']
+        ]
+    },
+    include: [{
+        model: Rating,
+        attributes: []
+    }],
+    group: ['Idea.id']
+});
 
 
 //synchronize schema (creates missing tables)

@@ -1,3 +1,4 @@
+"use strict";
 import { AuthController } from "../controllers/AuthenticationController.js";
 
 /**

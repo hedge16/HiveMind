@@ -1,3 +1,4 @@
+"use strict";
 
 export function ensureIdeaDoesNotExceedMaxLength(req, res, next) {
     if (req.body.title.length > 50 || req.body.description.length > 400) {
