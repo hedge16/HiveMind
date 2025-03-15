@@ -1,5 +1,5 @@
 "use strict";
-import {Idea, Rating} from "../db/db.js";
+import {Idea} from "../db/db.js";
 import {Op} from "sequelize";
 import sequelize from "sequelize";
 

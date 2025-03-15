@@ -7,6 +7,8 @@ import swaggerUI from 'swagger-ui-express';
 import {authenticationRouter} from './routes/AuthenticationRouter.js';
 import { enforceAuthentication } from './middleware/authorization.js';
 import { ideaRouter } from './routes/IdeaRouter.js';
+import { commentRouter } from './routes/CommentRouter.js';
+import { voteRouter } from './routes/VoteRouter.js';
 
 const app = express();
 const PORT = 3000;
@@ -46,6 +48,8 @@ app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 app.use(authenticationRouter);
 app.use(enforceAuthentication);
 app.use(ideaRouter);
+app.use(commentRouter);
+app.use(voteRouter);
 
 app.listen(PORT);
 

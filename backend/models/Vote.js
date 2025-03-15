@@ -1,8 +1,8 @@
 "use strict";
 import { DataTypes } from "sequelize";
 
-export function createRatings(database) {
-    database.define('Rating', {
+export function createVotes(database) {
+    database.define('Vote', {
         id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
@@ -14,10 +14,6 @@ export function createRatings(database) {
             validate: {
                 isIn: [[1, -1]]
             }
-        },
-        comment: {
-            type: DataTypes.STRING,
-            allowNull: true
         }
     });
 }

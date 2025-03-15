@@ -2,7 +2,8 @@
 import { Sequelize } from "sequelize";
 import { createUsers } from "../models/User.js";
 import { createIdeas } from "../models/Idea.js";
-import { createRatings } from "../models/Rating.js";
+import { createVotes } from "../models/Vote.js";
+import { createComments } from "../models/Comment.js";
 
 
 export const database = new Sequelize("sqlite:mydb.sqlite");
@@ -14,33 +15,41 @@ try {
 }
 createUsers(database);
 createIdeas(database);
-createRatings(database);
+createVotes(database);
+createComments(database);
 
 
-export const { User, Idea, Rating } = database.models;
+export const { User, Idea, Vote, Comment } = database.models;
 
-
+// Define relationships
 User.hasMany(Idea);
 Idea.belongsTo(User);
-Idea.hasMany(Rating);
-Rating.belongsTo(Idea);
-Rating.belongsTo(User);
+Idea.hasMany(Vote);
+Vote.belongsTo(Idea);
+Vote.belongsTo(User);
+User.hasMany(Comment);
+Comment.belongsTo(User);
+Idea.hasMany(Comment);
+Comment.belongsTo(Idea);
 
 Idea.addScope('withVotes', {
     attributes: {
-        include: [
-            [Sequelize.fn('SUM', Sequelize.literal('CASE WHEN Ratings.vote = 1 THEN 1 ELSE 0 END')), 'totalUpvotes'],
-            [Sequelize.fn('SUM', Sequelize.literal('CASE WHEN Ratings.vote = -1 THEN 1 ELSE 0 END')), 'totalDownvotes'],
-            [Sequelize.literal('SUM(CASE WHEN Ratings.vote = 1 THEN 1 ELSE 0 END) / NULLIF(SUM(CASE WHEN Ratings.vote = -1 THEN 1 ELSE 0 END), 0)'), 'score'],
-            [Sequelize.literal('COUNT(Ratings.id)'), 'TotalVotes']
-        ]
+      include: [
+        [Sequelize.fn('COUNT', Sequelize.col('Votes.IdeaId')), 'totalVotes'],
+        [Sequelize.fn('SUM', Sequelize.literal('CASE WHEN Votes.vote = 1 THEN 1 ELSE 0 END')), 'totalUpvotes'],
+        [Sequelize.fn('SUM', Sequelize.literal('CASE WHEN Votes.vote = -1 THEN 1 ELSE 0 END')), 'totalDownvotes'],
+        [Sequelize.literal('SUM(CASE WHEN Votes.vote = 1 THEN 1 ELSE 0 END) - SUM(CASE WHEN Votes.vote = -1 THEN 1 ELSE 0 END)'), 'score']
+      ]
     },
-    include: [{
-        model: Rating,
-        attributes: []
-    }],
+    include: [
+      {
+        model: Vote,
+        attributes: [],
+        duplicating: false
+      }
+    ],
     group: ['Idea.id']
-});
+  });
 
 
 //synchronize schema (creates missing tables)
