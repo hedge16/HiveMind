@@ -4,7 +4,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUI from 'swagger-ui-express';
-import {authenticationRouter} from './routes/AuthenticationRouter.js';
+import {authenticationRouter} from './routes/authenticationRouter.js';
 import { enforceAuthentication } from './middleware/authorization.js';
 import { ideaRouter } from './routes/IdeaRouter.js';
 import { commentRouter } from './routes/CommentRouter.js';
