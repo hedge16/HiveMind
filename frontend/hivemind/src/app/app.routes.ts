@@ -3,13 +3,15 @@ import { HomePageComponent } from './home-page/home-page.component';
 import { RegisterPageComponent } from './register-page/register-page.component';
 import { LoginPageComponent } from './login-page/login-page.component';
 import { LandingPageComponent } from './landing-page/landing-page.component';
+import { authorizationGuard } from './_guards/authorization/authorization.guard';
 
 
 export const routes: Routes = [
     {
         path: 'home',
         title: 'Home',
-        component: HomePageComponent
+        component: HomePageComponent,
+        canActivate: [authorizationGuard]
     },
     {
         path: 'register',
