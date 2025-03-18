@@ -5,11 +5,11 @@ import { FooterComponent } from '../footer/footer.component';
 import { RouterLink } from '@angular/router';
 
 @Component({
-  selector: 'app-register-page',
+  selector: 'app-landing-page',
   imports: [NavbarComponent, HeaderComponent, FooterComponent, RouterLink],
-  templateUrl: './register-page.component.html',
-  styleUrl: './register-page.component.scss'
+  templateUrl: './landing-page.component.html',
+  styleUrl: './landing-page.component.scss'
 })
-export class RegisterPageComponent {
+export class LandingPageComponent {
 
 }

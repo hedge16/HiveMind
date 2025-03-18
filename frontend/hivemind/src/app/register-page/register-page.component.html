@@ -1,6 +1,32 @@
-<app-header/>
-<app-navbar/>
-<body>
-    <p>Register works!</p>
-</body>
-<app-footer/>
+<app-header></app-header>
+<app-navbar></app-navbar>
+<main>
+    <section class="register-section">
+        <h1>Register for HiveMind</h1>
+        <form>
+            <div class="form-group">
+                <label for="firstName">First Name:</label>
+                <input type="text" id="firstName" name="firstName" required>
+            </div>
+            <div class="form-group">
+                <label for="lastName">Last Name:</label>
+                <input type="text" id="lastName" name="lastName" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div class="form-group">
+                <label for="confirm-password">Confirm Password:</label>
+                <input type="password" id="confirm-password" name="confirm-password" required>
+            </div>
+            <button type="submit">Register</button>
+        </form>
+        <p>Already have an account? <a routerLink="/login">Login here</a></p>
+    </section>
+</main>
+<app-footer></app-footer>

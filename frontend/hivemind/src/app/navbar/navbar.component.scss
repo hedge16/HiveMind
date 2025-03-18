@@ -1,0 +1,40 @@
+@import '../../styles.scss';
+
+nav {
+    background-color: $primary-color;
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-family: $font-family;
+}
+
+nav .brand {
+    font-size: 1.5em;
+    font-weight: 500;
+}
+
+nav .nav-links {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+}
+
+nav .nav-links a {
+    color: white;
+    text-decoration: none;
+    margin-left: 20px;
+    font-size: 1em;
+    transition: color 0.3s ease;
+}
+
+nav .nav-links a:hover {
+    color: $tertiary-color;
+}
+
+nav .nav-links a:focus {
+    outline: none;
+    color: $secondary-color;
+}
