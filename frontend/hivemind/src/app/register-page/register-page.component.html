@@ -1,95 +1,63 @@
 <app-header></app-header>
 <app-navbar></app-navbar>
-<main class="dark:bg-gray-900 h-full">
-  <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto h-full">
-    <div class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
-      <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
-        <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-          Create a new account
-        </h1>
-        <form class="space-y-4 md:space-y-6" [formGroup]="signupForm" (ngSubmit)="handleSignup()">
-          <div>
-            <label for="firstName" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First Name</label>
-            <input
-              type="text"
-              formControlName="firstName"
-              id="firstName"
-              class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
-              placeholder="Your first name"
-              required
-            >
-            @if (submitted && signupForm.controls.firstName.errors) {
-              @if (signupForm.controls.firstName.errors['required']) {
-                <p class="form-error text-red-500 text-sm">First name is required.</p>
-              }
-            }
-          </div>
-          <div>
-            <label for="lastName" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Last Name</label>
-            <input
-              type="text"
-              formControlName="lastName"
-              id="lastName"
-              class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
-              placeholder="Your last name"
-              required
-            >
-            @if (submitted && signupForm.controls.lastName.errors) {
-              @if (signupForm.controls.lastName.errors['required']) {
-                <p class="form-error text-red-500 text-sm">Last name is required.</p>
-              }
-            }
-          </div>
-          <div>
-            <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
-            <input
-              type="email"
-              formControlName="email"
-              id="email"
-              class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
-              placeholder="Your email"
-              required
-            >
-            @if (submitted && signupForm.controls.email.errors) {
-              @if (signupForm.controls.email.errors['required']) {
-                <p class="form-error text-red-500 text-sm">Email is required.</p>
-              }
-              @if (signupForm.controls.email.errors['email']) {
-                <p class="form-error text-red-500 text-sm">Enter a valid email address.</p>
-              }
-            }
-          </div>
-          <div>
-            <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
-            <input
-              type="password"
-              formControlName="password"
-              id="password"
-              class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5"
-              placeholder="••••••••"
-              required
-            >
-            @if (submitted && signupForm.controls.password.errors) {
-              @if (signupForm.controls.password.errors['required']) {
-                <p class="form-error text-red-500 text-sm">Password is required.</p>
-              }
-              @if (signupForm.controls.password.errors['minlength']) {
-                <p class="form-error text-red-500 text-sm">Password should contain at least 4 characters.</p>
-              }
-            }
-          </div>
-          <button
-            type="submit"
-            class="w-full text-white bg-teal-700 hover:bg-teal-800 rounded-lg text-sm px-5 py-2.5 text-center"
-          >
-            Register
-          </button>
-          <p class="text-sm font-medium text-gray-500 dark:text-gray-400">
-            Already have an account? <a routerLink="/login" class="link text-teal-700 hover:underline">Login</a>
-          </p>
+<main class="flex justify-center items-center min-h-screen bg-gray-100">
+    <section class="register-section bg-white shadow-md rounded-lg p-8 w-full max-w-md">
+        <h1 class="text-2xl font-bold text-center mb-6 text-gray-800">Register for HiveMind</h1>
+        <form [formGroup]="signupForm" (ngSubmit)="handleSignup()" class="space-y-4">
+            <div class="form-group">
+                <label for="firstName" class="block text-sm font-medium text-gray-700">First Name:</label>
+                <input type="text" id="firstName" formControlName="firstName" required
+                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                @if (submitted && signupForm.controls.firstName.errors) {
+                    @if (signupForm.controls.firstName.errors['required']) {
+                        <p class="text-red-500 text-sm mt-1">First name is required.</p>
+                    }
+                }
+            </div>
+            <div class="form-group">
+                <label for="lastName" class="block text-sm font-medium text-gray-700">Last Name:</label>
+                <input type="text" id="lastName" formControlName="lastName" required
+                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                @if (submitted && signupForm.controls.lastName.errors) {
+                    @if (signupForm.controls.lastName.errors['required']) {
+                        <p class="text-red-500 text-sm mt-1">Last name is required.</p>
+                    }
+                }
+            </div>
+            <div class="form-group">
+                <label for="email" class="block text-sm font-medium text-gray-700">Email:</label>
+                <input type="email" id="email" formControlName="email" required
+                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                @if (submitted && signupForm.controls.email.errors) {
+                    @if (signupForm.controls.email.errors['required']) {
+                        <p class="text-red-500 text-sm mt-1">Email is required.</p>
+                    }
+                    @if (signupForm.controls.email.errors['email']) {
+                        <p class="text-red-500 text-sm mt-1">Enter a valid email address.</p>
+                    }
+                }
+            </div>
+            <div class="form-group">
+                <label for="password" class="block text-sm font-medium text-gray-700">Password:</label>
+                <input type="password" id="password" formControlName="password" required
+                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                @if (submitted && signupForm.controls.password.errors) {
+                    @if (signupForm.controls.password.errors['required']) {
+                        <p class="text-red-500 text-sm mt-1">Password is required.</p>
+                    }
+                    @if (signupForm.controls.password.errors['minlength']) {
+                        <p class="text-red-500 text-sm mt-1">Password must be at least 4 characters long.</p>
+                    }
+                }
+            </div>
+            <button type="submit"
+                class="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                Register
+            </button>
         </form>
-      </div>
-    </div>
-  </div>
+        <p class="mt-4 text-sm text-center text-gray-600">Already have an account? 
+            <a routerLink="/login" class="text-indigo-600 hover:underline">Login here</a>
+        </p>
+    </section>
 </main>
 <app-footer></app-footer>

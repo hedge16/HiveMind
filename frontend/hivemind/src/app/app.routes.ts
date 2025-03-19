@@ -4,6 +4,7 @@ import { RegisterPageComponent } from './register-page/register-page.component';
 import { LoginPageComponent } from './login-page/login-page.component';
 import { LandingPageComponent } from './landing-page/landing-page.component';
 import { authorizationGuard } from './_guards/authorization/authorization.guard';
+import { LogoutComponent } from './logout/logout.component';
 
 
 export const routes: Routes = [
@@ -27,5 +28,10 @@ export const routes: Routes = [
         path: '',
         title: 'Welcome to Hivemind',
         component: LandingPageComponent
+    },
+    {
+        path: "logout",
+        title: "Logout",
+        component: LogoutComponent
     }
 ];
