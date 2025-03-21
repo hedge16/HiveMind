@@ -5,6 +5,7 @@ import { LoginPageComponent } from './login-page/login-page.component';
 import { LandingPageComponent } from './landing-page/landing-page.component';
 import { authorizationGuard } from './_guards/authorization/authorization.guard';
 import { LogoutComponent } from './logout/logout.component';
+import { CreateIdeaPageComponent } from './create-idea-page/create-idea-page.component';
 
 
 export const routes: Routes = [
@@ -30,8 +31,13 @@ export const routes: Routes = [
         component: LandingPageComponent
     },
     {
-        path: "logout",
-        title: "Logout",
+        path: 'logout',
+        title: 'Logout',
         component: LogoutComponent
+    },
+    {
+        path: 'create-idea',
+        title: 'Create Idea',
+        component: CreateIdeaPageComponent,
     }
 ];
