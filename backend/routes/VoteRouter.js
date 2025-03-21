@@ -1,9 +1,10 @@
 import express from 'express';
 import { VoteController } from '../controllers/VoteController.js';
+import { ensureUserDoesNotVoteForOwnIdea, ensureUserVotesOnlyOthersIdeasOnce } from '../middleware/VoteMiddleware.js';
 
 export const voteRouter = express.Router();
 
-voteRouter.post("/vote", (req, res, next) => {
+voteRouter.post("/vote", ensureUserVotesOnlyOthersIdeasOnce, ensureUserDoesNotVoteForOwnIdea, (req, res, next) => {
     VoteController.createVote(req).then((vote) => {
         res.json({
             success: true,
@@ -19,7 +20,7 @@ voteRouter.post("/vote", (req, res, next) => {
     });
 });
 
-voteRouter.get("/vote/idea/:id",  (req, res, next) => {
+voteRouter.get("/vote/idea/:id", (req, res, next) => {
     VoteController.getVotesByIdeaId(req).then((votes) => {
         res.json(votes);
     }).catch((error) => {

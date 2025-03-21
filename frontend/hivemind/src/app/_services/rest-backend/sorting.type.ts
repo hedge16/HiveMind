@@ -1,0 +1,1 @@
+export type SortingType = 'controversial' | 'newest' | 'mainstream' | 'unpopular' ;

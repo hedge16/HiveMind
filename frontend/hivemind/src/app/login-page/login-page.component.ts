@@ -7,6 +7,7 @@ import { Router, RouterLink } from '@angular/router';
 import { ReactiveFormsModule, FormControl, FormGroup, Validators} from '@angular/forms';
 import { RestBackendService } from '../_services/rest-backend/rest-backend.service';
 import { AuthService } from '../_services/auth/auth.service';
+import { LoginResponse } from '../_services/rest-backend/login-response.type';
 
 @Component({
   selector: 'app-login-page',
@@ -34,15 +35,16 @@ export class LoginPageComponent {
         email: this.loginForm.value.email as string,
         password: this.loginForm.value.password as string,
       }).subscribe({
-        next: (token) => {
-          this.authService.updateToken(token);
+        next: (loginResponse : LoginResponse) => {
+          this.authService.updateToken(loginResponse.token);
+          this.restService.setUser(loginResponse.user);
         },
         error: (err) => {
           this.toastr.error("Please, insert a valid username and password", "Oops! Invalid credentials");
         },
         complete: () => {
           this.toastr.success(`You can now share your ideas`,`Welcome back!`);
-          this.router.navigateByUrl("/home");
+          this.router.navigateByUrl("home");
         }
       })
     }

@@ -47,4 +47,12 @@ export class AuthController {
     Jwt.verify(token, process.env.TOKEN_SECRET, callback);
   }
 
+  static getUserByEmail(email){
+    return User.findOne({
+      where: {
+        email: email
+      }
+    });
+  }
+
 }

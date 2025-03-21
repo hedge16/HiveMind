@@ -1,6 +1,7 @@
 import { Injectable, WritableSignal, computed, effect, signal } from '@angular/core';
 import { jwtDecode } from "jwt-decode";
 import { AuthState } from './auth-state.type';
+import { UserType } from '../rest-backend/login-response.type';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,7 @@ export class AuthService {
   user = computed(() => this.authState().user);
   token = computed(() => this.authState().token);
   isAuthenticated = computed(() => this.authState().isAuthenticated);
+
 
   constructor(){
     effect( () => {
@@ -80,4 +82,5 @@ export class AuthService {
       isAuthenticated: false
     });
   }
+
 }
