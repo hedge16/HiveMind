@@ -77,6 +77,19 @@ export class IdeaController {
                     limit: 10,
                     offset: 10 * (req.params.pageNumber - 1)
                 });
+            case "newest":
+                return Idea.scope('withVotes').findAll({
+                    where: {
+                        createdAt: {
+                            [Op.gte]: oneWeekAgo
+                        }
+                    },
+                    order: [
+                        ['createdAt', 'DESC'] // Ordina per data di creazione in ordine decrescente
+                    ],
+                    limit: 10,
+                    offset: 10 * (req.params.pageNumber - 1)
+                });
             default:
                 throw new Error("Invalid order parameter");
         }

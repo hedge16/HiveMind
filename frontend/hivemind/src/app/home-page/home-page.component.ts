@@ -82,7 +82,7 @@ export class HomePageComponent {
           this.displayedIdeas = this.newestIdeas;
         }
         break;
-      case 'unpopular': // Gestione del sorting "unpopular"
+      case 'unpopular':
         if (this.unpopularIdeas.length === 0) {
           this.restBackend.getPagedIdeas('unpopular', 1).subscribe(
             (data: IdeaType[]) => {
@@ -98,6 +98,7 @@ export class HomePageComponent {
         }
         break;
     }
+  
   }
 
   // Carica altre idee per la categoria selezionata

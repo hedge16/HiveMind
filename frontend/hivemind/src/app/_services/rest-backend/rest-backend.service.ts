@@ -36,7 +36,7 @@ export class RestBackendService {
   }
 
   getPagedIdeas(sorting: SortingType, pageNumber: number){
-    const url = `${this.url}/idea/${this.sorting}/${pageNumber}`;
+    const url = `${this.url}/idea/${sorting}/${pageNumber}`;
     return this.http.get<IdeaType[]>(url, this.httpOptions);
   }
 
