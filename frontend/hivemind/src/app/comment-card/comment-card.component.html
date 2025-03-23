@@ -4,8 +4,6 @@
     {{ comment?.createdAt | date: 'short' }}
   </div>
 
-  <!-- Contenuto del commento -->
-  <p class="text-gray-700 dark:text-gray-300">
-    {{ comment?.content }}
-  </p>
+  <!-- Contenuto del commento processato in Markdown -->
+  <div class="text-gray-700 dark:text-gray-300" [innerHTML]="getProcessedContent()"></div>
 </div>

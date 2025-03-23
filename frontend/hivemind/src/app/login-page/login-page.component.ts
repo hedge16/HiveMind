@@ -45,8 +45,10 @@ export class LoginPageComponent {
         // Mostra un messaggio di successo
         this.toastr.success(`You can now share your ideas`, `Welcome back!`);
 
+        
         // Naviga immediatamente verso la home
         this.router.navigateByUrl("home");
+
       },
       error: (err) => {
         // Mostra un messaggio di errore
