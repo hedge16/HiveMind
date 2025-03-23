@@ -1,11 +1,11 @@
 export interface IdeaType {
-    id: number;
+    id?: number;
     title: string;
     description: string;
     createdAt?: string;
     updatedAt?: string;
     UserId: number;
     totalVotes?: number;
-    positiveVotes?: number;
-    negativeVotes?: number;
+    totalUpvotes?: number;
+    totalDownvotes?: number;
 }

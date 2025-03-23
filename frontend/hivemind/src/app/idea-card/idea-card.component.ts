@@ -4,6 +4,7 @@ import { RestBackendService } from '../_services/rest-backend/rest-backend.servi
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../_services/auth/auth.service';
 import { VoteRequest } from '../_services/rest-backend/vote-request.type';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-idea-card',
@@ -17,12 +18,13 @@ export class IdeaCardComponent {
   restBackend = inject(RestBackendService);
   toastr = inject(ToastrService);
   authService = inject(AuthService);
+  router = inject(Router);
 
   upvote() {
     if(this.idea.id !== undefined){
       const request : VoteRequest = {
         IdeaId: this.idea.id,
-        UserId: this.restBackend.currentUser.id,
+        UserId: this.restBackend.currentUser?.id ?? 0,
         vote: 1
       }
       this.restBackend.voteIdea(request).subscribe({
@@ -41,7 +43,7 @@ export class IdeaCardComponent {
     if(this.idea.id !== undefined){
       const request : VoteRequest = {
         IdeaId: this.idea.id,
-        UserId: this.restBackend.currentUser.id,
+        UserId: this.restBackend.currentUser?.id ?? 0,
         vote: -1
       }
       this.restBackend.voteIdea(request).subscribe({
@@ -54,5 +56,9 @@ export class IdeaCardComponent {
       });
     }
   }
-  viewDetails(){}
+  viewDetails(){
+    if(this.idea.id !== undefined){
+      this.router.navigate(['/idea', this.idea.id]);
+    }
+  }
 }

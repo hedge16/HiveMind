@@ -6,6 +6,7 @@ import { SortingType } from './sorting.type';
 import { IdeaType } from './idea.type';
 import { VoteRequest } from './vote-request.type';
 import { LoginResponse, UserType } from './login-response.type';
+import { CommentType } from './comment.type';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,7 @@ export class RestBackendService {
   };
   sorting : SortingType = 'controversial';
   pageNumber = 1;
-  currentUser: UserType = {id: 0, firstName: '', lastName: '', email: '', password: ''};
+  currentUser: UserType | null = null;
 
   login(loginRequest: AuthRequest){
     const url = `${this.url}/auth`; 
@@ -44,7 +45,33 @@ export class RestBackendService {
     return this.http.post(url, voteRequest, this.httpOptions);
   }
 
-  setUser(user: UserType){
+  createIdea(idea: IdeaType){
+    const url = `${this.url}/idea`;
+    return this.http.post(url, idea, this.httpOptions);
+  }
+
+  createComment(comment: CommentType){
+    const url = `${this.url}/comment`;
+    return this.http.post(url, comment, this.httpOptions);
+  }
+
+  getComments(ideaId: number){
+    const url = `${this.url}/comment/idea/${ideaId}`;
+    return this.http.get<CommentType[]>(url, this.httpOptions);
+  }
+
+  getIdeaById(ideaId: number){
+    const url = `${this.url}/idea/${ideaId}`;
+    return this.http.get<IdeaType>(url, this.httpOptions);
+  }
+  
+  setUser(user: UserType) {
     this.currentUser = user;
+    localStorage.setItem('currentUser', JSON.stringify(user)); // Save user to localStorage
+  }
+
+  clearUser() {
+    this.currentUser = null;
+    localStorage.removeItem('currentUser'); // Remove user from localStorage
   }
 }

@@ -6,6 +6,7 @@ import { LandingPageComponent } from './landing-page/landing-page.component';
 import { authorizationGuard } from './_guards/authorization/authorization.guard';
 import { LogoutComponent } from './logout/logout.component';
 import { CreateIdeaPageComponent } from './create-idea-page/create-idea-page.component';
+import { IdeaDetailPageComponent } from './idea-detail-page/idea-detail-page.component';
 
 
 export const routes: Routes = [
@@ -39,5 +40,12 @@ export const routes: Routes = [
         path: 'create-idea',
         title: 'Create Idea',
         component: CreateIdeaPageComponent,
+        canActivate: [authorizationGuard]
+    },
+    {
+        path: 'idea/:id',
+        title: "Idea details",
+        component: IdeaDetailPageComponent,
+        canActivate: [authorizationGuard]
     }
 ];

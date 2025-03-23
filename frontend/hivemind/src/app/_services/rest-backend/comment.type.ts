@@ -1,7 +1,7 @@
 export interface CommentType {
-    id: number;
+    id?: number;
     content: string;
-    createdAt?: string;
+    createdAt: string;
     updatedAt?: string;
     UserId: number;
     IdeaId: number;

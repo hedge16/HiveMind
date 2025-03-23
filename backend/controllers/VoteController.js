@@ -16,8 +16,7 @@ export class VoteController {
             }
         });
     }
-    static hasUserVotedForIdea(userId, ideaId, callback
-    ){
+    static hasUserVotedForIdea(userId, ideaId, callback){
         Vote.findOne({
             where: {
                 UserId: userId,

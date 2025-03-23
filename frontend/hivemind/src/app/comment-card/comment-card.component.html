@@ -1,0 +1,11 @@
+<div class="max-w-md bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700 p-4">
+  <!-- Data di creazione -->
+  <div class="text-sm text-gray-500 dark:text-gray-400 mb-2">
+    {{ comment?.createdAt | date: 'short' }}
+  </div>
+
+  <!-- Contenuto del commento -->
+  <p class="text-gray-700 dark:text-gray-300">
+    {{ comment?.content }}
+  </p>
+</div>

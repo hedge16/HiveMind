@@ -67,6 +67,19 @@ ideaRouter.post("/idea", ensureIdeaDoesNotExceedMaxLength, (req, res, next) => {
     });
 });
 
+ideaRouter.get("/idea/:id", (req, res, next) => {
+    IdeaController.getIdeaById(req).then((idea) => {
+        if (!idea) {
+            // Se l'idea non esiste, restituisci un errore 404
+            return next({ status: 404, message: "Idea not found" });
+        }
+        res.json(idea); // Restituisci l'idea trovata
+    }).catch((err) => {
+        console.error(err); // Log dell'errore per il debug
+        next({ status: 500, message: "Internal server error" }); // Gestione di errori generici
+    });
+});
+
 ideaRouter.get("/idea/user/:userid", (req, res, next) => {
     IdeaController.getIdeasByUserId(req).then((ideas) => {
         res.json(ideas);

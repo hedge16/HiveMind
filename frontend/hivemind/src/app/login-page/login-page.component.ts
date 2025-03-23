@@ -28,25 +28,30 @@ export class LoginPageComponent {
 
   handleLogin() {
     this.submitted = true;
-    if(this.loginForm.invalid){
+    if (this.loginForm.invalid) {
       this.toastr.error("The data you provided is invalid!", "Oops! Invalid data!");
-    } else {
-      this.restService.login({
-        email: this.loginForm.value.email as string,
-        password: this.loginForm.value.password as string,
-      }).subscribe({
-        next: (loginResponse : LoginResponse) => {
-          this.authService.updateToken(loginResponse.token);
-          this.restService.setUser(loginResponse.user);
-        },
-        error: (err) => {
-          this.toastr.error("Please, insert a valid username and password", "Oops! Invalid credentials");
-        },
-        complete: () => {
-          this.toastr.success(`You can now share your ideas`,`Welcome back!`);
-          this.router.navigateByUrl("home");
-        }
-      })
+      return; // Esci immediatamente se il modulo non è valido
     }
+
+    this.restService.login({
+      email: this.loginForm.value.email as string,
+      password: this.loginForm.value.password as string,
+    }).subscribe({
+      next: (loginResponse: LoginResponse) => {
+        // Aggiorna il token e l'utente
+        this.authService.updateToken(loginResponse.token);
+        this.restService.setUser(loginResponse.user);
+
+        // Mostra un messaggio di successo
+        this.toastr.success(`You can now share your ideas`, `Welcome back!`);
+
+        // Naviga immediatamente verso la home
+        this.router.navigateByUrl("home");
+      },
+      error: (err) => {
+        // Mostra un messaggio di errore
+        this.toastr.error("Please, insert a valid username and password", "Oops! Invalid credentials");
+      }
+    });
   }
 }

@@ -1,28 +1,35 @@
 "use strict";
-import {Idea} from "../db/db.js";
-import {Op} from "sequelize";
+import { Idea } from "../db/db.js";
+import { Op } from "sequelize";
 import sequelize from "sequelize";
 
 export class IdeaController {
     
-    static async createIdea(req){
+    static async createIdea(req) {
         const idea = Idea.build(req.body);
         idea.UserId = req.body.UserId;
         return idea.save();
     }
-    static async getIdeasByUserId(req){
+
+    static async getIdeasByUserId(req) {
         const userId = req.params.userid;
-        return Idea.findAll(
-            {
-                where: {
-                    UserId: userId
-                }
+        return Idea.scope('withVotes').findAll({
+            where: {
+                UserId: userId
             }
-        );
+        });
     }
 
-    static async getIdeaById(req){
-        return Idea.findByPk(req.params.id);
+    static async getIdeaById(req) {
+        return Idea.scope('withVotes').findByPk(req.params.id);
+    }
+
+    static async findByIdeaId(ideaId, callback) {
+        Idea.scope('withVotes').findByPk(ideaId).then((idea) => {
+            callback(null, idea);
+        }).catch((error) => {
+            callback(error, null);
+        });
     }
 
     static async getPagedIdeas(req) {

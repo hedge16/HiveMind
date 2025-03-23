@@ -18,7 +18,7 @@ export function ensureUserVotesOnlyOthersIdeasOnce(req, res, next) {
 export function ensureUserDoesNotVoteForOwnIdea(req, res, next) {
     const ideaId = req.body.IdeaId;
     const userId = req.body.UserId;
-    IdeaController.getIdeaById(ideaId, (err, idea) => {
+    IdeaController.findByIdeaId(ideaId, (err, idea) => {
         if(err){
             next({status: 500, message: "Internal server error"});
         } else if(idea.UserId === userId){
