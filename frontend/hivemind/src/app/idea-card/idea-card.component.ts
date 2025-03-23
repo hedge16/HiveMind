@@ -30,6 +30,7 @@ export class IdeaCardComponent {
       this.restBackend.voteIdea(request).subscribe({
         next: (data) => {
           this.toastr.success('Idea upvoted');
+          this.idea.totalUpvotes = (this.idea.totalUpvotes ?? 0) + 1
         },
         error: (err) => {
           this.toastr.error('Error upvoting idea');
@@ -49,6 +50,7 @@ export class IdeaCardComponent {
       this.restBackend.voteIdea(request).subscribe({
         next: (data) => {
           this.toastr.success('Idea downvoted');
+          this.idea.totalDownvotes = (this.idea.totalDownvotes ?? 0) + 1
         },
         error: (err) => {
           this.toastr.error('Error downvoting idea');

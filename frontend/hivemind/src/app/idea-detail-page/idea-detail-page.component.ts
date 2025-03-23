@@ -32,6 +32,16 @@ export class IdeaDetailPageComponent {
   comments: CommentType[] = [];
 
   ngOnInit() {
+    // Retrieve currentUser from localStorage
+    const currentUserString = localStorage.getItem('currentUser');
+    if (currentUserString) {
+      this.currentUser = JSON.parse(currentUserString);
+      console.log('Current user loaded:', this.currentUser); // Debugging log
+    } else {
+      this.toastr.error('You must be logged in to vote on ideas');
+      this.router.navigateByUrl('/login'); // Redirect to login if no user is logged in
+      return;
+    }
 
     this.ideaId = this.route.snapshot.paramMap.get('id');
 
@@ -51,9 +61,7 @@ export class IdeaDetailPageComponent {
       // Fetch comments for the idea
       this.restBackend.getComments(numericIdeaId).subscribe({
         next: (data) => {
-          this.comments = data;
           this.comments = data.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-
         },
         error: () => {
           this.toastr.error('Error loading comments');
@@ -75,6 +83,7 @@ export class IdeaDetailPageComponent {
       this.restBackend.voteIdea(request).subscribe({
         next: () => {
           this.toastr.success('Idea upvoted');
+          this.idea.totalUpvotes = (this.idea.totalUpvotes ?? 0) + 1;
         },
         error: () => {
           this.toastr.error('Error upvoting idea');
@@ -93,6 +102,7 @@ export class IdeaDetailPageComponent {
       this.restBackend.voteIdea(request).subscribe({
         next: () => {
           this.toastr.success('Idea downvoted');
+          this.idea.totalDownvotes = (this.idea.totalDownvotes ?? 0) + 1;
         },
         error: () => {
           this.toastr.error('Error downvoting idea');
