@@ -7,6 +7,7 @@ import { IdeaType } from './idea.type';
 import { VoteRequest } from './vote-request.type';
 import { LoginResponse, UserType } from './login-response.type';
 import { CommentType } from './comment.type';
+import { PagedIdeasType } from './paged-ideas-response.type';
 
 @Injectable({
   providedIn: 'root'
@@ -37,7 +38,7 @@ export class RestBackendService {
 
   getPagedIdeas(sorting: SortingType, pageNumber: number){
     const url = `${this.url}/idea/${sorting}/${pageNumber}`;
-    return this.http.get<IdeaType[]>(url, this.httpOptions);
+    return this.http.get<PagedIdeasType>(url, this.httpOptions);
   }
 
   voteIdea(voteRequest : VoteRequest){

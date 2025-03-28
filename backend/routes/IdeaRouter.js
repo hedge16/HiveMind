@@ -88,11 +88,18 @@ ideaRouter.get("/idea/user/:userid", (req, res, next) => {
     });
 });
 
-ideaRouter.get("/idea/:order/:pageNumber", (req, res, next) => {
-    IdeaController.getPagedIdeas(req).then((ideas) => {
-        res.json(ideas);
-    }).catch((err) => {
-        console.log(err);
-        next({status: 500, message: "Internal server error"});
-    });
+ideaRouter.get("/idea/:order/:pageNumber", async (req, res, next) => {
+    try {
+        // Ottieni le idee e il numero totale di pagine dal controller
+        const { ideas, totalPages } = await IdeaController.getPagedIdeas(req);
+
+        // Restituisci le idee e il numero totale di pagine come risposta JSON
+        res.json({
+            ideas: ideas,
+            totalPages: totalPages
+        });
+    } catch (err) {
+        console.error(err); // Log dell'errore per il debug
+        next({ status: 500, message: "Internal server error" }); // Gestione dell'errore
+    }
 });
