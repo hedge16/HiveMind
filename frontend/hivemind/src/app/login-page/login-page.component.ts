@@ -20,7 +20,7 @@ export class LoginPageComponent {
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required, Validators.minLength(4), Validators.maxLength(16)]),
   });
-  toastr = inject(ToastrService );
+  toastr = inject(ToastrService);
   restService = inject(RestBackendService);
   authService = inject(AuthService);
   router = inject(Router);
@@ -45,10 +45,10 @@ export class LoginPageComponent {
         // Mostra un messaggio di successo
         this.toastr.success(`You can now share your ideas`, `Welcome back!`);
 
-        
-        // Naviga immediatamente verso la home
-        this.router.navigateByUrl("home");
-
+        // L'utilizzo della istruzione navigateByUrl senza setTimeout crea un bug
+        setTimeout(() => {
+          this.router.navigateByUrl("home");
+        }, 0);
       },
       error: (err) => {
         // Mostra un messaggio di errore
