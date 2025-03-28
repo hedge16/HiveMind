@@ -23,16 +23,23 @@
   <!-- Ideas Section -->
   <section>
     <div class="grid grid-cols-2 gap-6">
-      @for (idea of displayedIdeas; track idea){
+      @for (idea of displayedIdeas; track idea) {
         <app-idea-card [idea]="idea"></app-idea-card>
       }
     </div>
-    <div class="flex justify-center mt-6">
+
+    <!-- Pagination Controls -->
+    <div class="flex justify-start mt-6 space-x-2"> 
       <button
-        (click)="loadMoreIdeas()"
-        class="bg-indigo-600 text-white py-2 px-6 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+        *ngFor="let page of totalPages; let i = index"
+        (click)="changePage(i + 1)"
+        [class.bg-indigo-600]="currentPage === i + 1"
+        [class.text-white]="currentPage === i + 1"
+        [class.bg-gray-200]="currentPage !== i + 1"
+        [class.text-gray-800]="currentPage !== i + 1"
+        class="py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
       >
-        Load More
+        {{ i + 1 }}
       </button>
     </div>
   </section>

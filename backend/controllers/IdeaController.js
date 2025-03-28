@@ -36,62 +36,61 @@ export class IdeaController {
         const oneWeekAgo = new Date();
         oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
 
+        const limit = 10; // Numero di idee per pagina
+        const offset = limit * (req.params.pageNumber - 1); // Calcola l'offset
+
+        let whereCondition = {
+            createdAt: {
+                [Op.gte]: oneWeekAgo
+            }
+        };
+
+        let orderCondition;
+
         switch (req.params.order) {
             case "controversial":
-                return Idea.scope('withVotes').findAll({
-                    where: {
-                        createdAt: {
-                            [Op.gte]: oneWeekAgo
-                        }
-                    },
-                    order: [
-                        [sequelize.literal('ABS(totalUpvotes - totalDownvotes)'), 'ASC'],
-                        [sequelize.literal('totalUpvotes + totalDownvotes'), 'DESC']
-                    ],
-                    limit: 10,
-                    offset: 10 * (req.params.pageNumber - 1)
-                });
+                orderCondition = [
+                    [sequelize.literal('ABS(totalUpvotes - totalDownvotes)'), 'ASC'],
+                    [sequelize.literal('totalUpvotes + totalDownvotes'), 'DESC']
+                ];
+                break;
             case "mainstream":
-                return Idea.scope('withVotes').findAll({
-                    where: {
-                        createdAt: {
-                            [Op.gte]: oneWeekAgo
-                        }
-                    },
-                    order: [
-                        [sequelize.literal('totalUpvotes - totalDownvotes'), 'DESC']
-                    ],
-                    limit: 10,
-                    offset: 10 * (req.params.pageNumber - 1)
-                });
+                orderCondition = [
+                    [sequelize.literal('totalUpvotes - totalDownvotes'), 'DESC']
+                ];
+                break;
             case "unpopular":
-                return Idea.scope('withVotes').findAll({
-                    where: {
-                        createdAt: {
-                            [Op.gte]: oneWeekAgo
-                        }
-                    },
-                    order: [
-                        [sequelize.literal('totalUpvotes - totalDownvotes'), 'ASC']
-                    ],
-                    limit: 10,
-                    offset: 10 * (req.params.pageNumber - 1)
-                });
+                orderCondition = [
+                    [sequelize.literal('totalUpvotes - totalDownvotes'), 'ASC']
+                ];
+                break;
             case "newest":
-                return Idea.scope('withVotes').findAll({
-                    where: {
-                        createdAt: {
-                            [Op.gte]: oneWeekAgo
-                        }
-                    },
-                    order: [
-                        ['createdAt', 'DESC'] // Ordina per data di creazione in ordine decrescente
-                    ],
-                    limit: 10,
-                    offset: 10 * (req.params.pageNumber - 1)
-                });
+                orderCondition = [
+                    ['createdAt', 'DESC']
+                ];
+                break;
             default:
                 throw new Error("Invalid order parameter");
         }
+
+        // Conta il numero totale di record
+        const totalRecords = await Idea.scope('withVotes').count({ where: whereCondition });
+
+        // Calcola il numero totale di pagine
+        const totalPages = Math.ceil(totalRecords / limit);
+
+        // Recupera le idee per la pagina corrente
+        const ideas = await Idea.scope('withVotes').findAll({
+            where: whereCondition,
+            order: orderCondition,
+            limit: limit,
+            offset: offset
+        });
+
+        // Restituisci le idee e il numero totale di pagine
+        return {
+            ideas,
+            totalPages
+        };
     }
 }
