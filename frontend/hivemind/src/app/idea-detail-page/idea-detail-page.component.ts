@@ -20,9 +20,7 @@ export class IdeaDetailPageComponent {
   idea: IdeaType = { id: 0, title: 'New idea', description: 'this is a new idea', UserId: 0 };
   ideaId: string | null = null;
 
-  constructor(private route: ActivatedRoute){
-
-  }
+  constructor(private route: ActivatedRoute) {}
 
   router = inject(Router);
   restBackend = inject(RestBackendService);
@@ -71,6 +69,11 @@ export class IdeaDetailPageComponent {
       this.toastr.error('Invalid idea ID');
       this.router.navigateByUrl('/home'); // Redirect to home if the idea ID is invalid
     }
+  }
+
+  // Metodo per verificare se l'utente loggato è il creatore dell'idea
+  isCreator(): boolean {
+    return this.currentUser?.id === this.idea.UserId;
   }
 
   upvote() {

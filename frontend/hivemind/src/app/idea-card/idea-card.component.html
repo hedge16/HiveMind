@@ -54,49 +54,52 @@
 
     <!-- Buttons -->
     <div class="flex flex-wrap justify-between items-center mt-4 gap-2">
-      <!-- Upvote Button -->
-      <button
-        (click)="upvote()"
-        class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-green-600 rounded-lg hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-500 dark:hover:bg-green-600 dark:focus:ring-green-800"
-      >
-        <span class="hidden sm:block">Upvote</span>
-        <svg
-          class="w-4 h-4 sm:ml-2"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
+      <!-- Condizione per mostrare i pulsanti -->
+      @if (!isCreator()) {
+        <!-- Upvote Button -->
+        <button
+          (click)="upvote()"
+          class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-green-600 rounded-lg hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-500 dark:hover:bg-green-600 dark:focus:ring-green-800"
         >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M5 15l7-7 7 7"
-          ></path>
-        </svg>
-      </button>
+          <span class="hidden sm:block">Upvote</span>
+          <svg
+            class="w-4 h-4 sm:ml-2"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M5 15l7-7 7 7"
+            ></path>
+          </svg>
+        </button>
 
-      <!-- Downvote Button -->
-      <button
-        (click)="downvote()"
-        class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-800"
-      >
-        <span class="hidden sm:block">Downvote</span>
-        <svg
-          class="w-4 h-4 sm:ml-2"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
+        <!-- Downvote Button -->
+        <button
+          (click)="downvote()"
+          class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-800"
         >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M19 9l-7 7-7-7"
-          ></path>
-        </svg>
-      </button>
+          <span class="hidden sm:block">Downvote</span>
+          <svg
+            class="w-4 h-4 sm:ml-2"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M19 9l-7 7-7-7"
+            ></path>
+          </svg>
+        </button>
+      }
 
       <!-- View Details Button -->
       <button
