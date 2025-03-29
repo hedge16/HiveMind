@@ -21,7 +21,7 @@ export class CreateIdeaPageComponent {
 
   restBackendService = inject(RestBackendService);
   toastr = inject(ToastrService);
-  router = inject(Router)
+  router = inject(Router);
 
   onSubmit() {
     if (this.ideaForm.invalid) {
@@ -29,10 +29,19 @@ export class CreateIdeaPageComponent {
       return;
     }
 
+    // Recupera lo UserId da localStorage
+    const currentUserString = localStorage.getItem('currentUser');
+    const currentUser = currentUserString ? JSON.parse(currentUserString) : null;
+
+    if (!currentUser || !currentUser.id) {
+      this.toastr.error('You must be logged in to create an idea!', 'Unauthorized');
+      return;
+    }
+
     this.restBackendService.createIdea({
       title: this.ideaForm.value.title as string,
       description: this.ideaForm.value.description as string,
-      UserId: Number(this.restBackendService.currentUser?.id ?? 0)
+      UserId: Number(currentUser.id) // Usa lo UserId recuperato da localStorage
     }).subscribe({
       next: () => {
         this.toastr.success('Idea created successfully!');
@@ -43,5 +52,4 @@ export class CreateIdeaPageComponent {
       }
     });
   }
-
 }

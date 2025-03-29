@@ -5,14 +5,15 @@ import { FooterComponent } from '../footer/footer.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RestBackendService } from '../_services/rest-backend/rest-backend.service';
 import { ToastrService } from 'ngx-toastr';
-import { VoteRequest } from '../_services/rest-backend/vote-request.type';
+import { VoteType } from '../_services/rest-backend/vote.type';
 import { CommentSectionComponent } from '../comment-section/comment-section.component';
 import { CommentType } from '../_services/rest-backend/comment.type';
 import { UserType } from '../_services/rest-backend/login-response.type';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-idea-detail-page',
-  imports: [HeaderComponent, FooterComponent, CommentSectionComponent],
+  imports: [HeaderComponent, FooterComponent, CommentSectionComponent, CommonModule],
   templateUrl: './idea-detail-page.component.html',
   styleUrl: './idea-detail-page.component.scss'
 })
@@ -28,13 +29,13 @@ export class IdeaDetailPageComponent {
 
   currentUser: UserType | null = null; // Updated to handle null values
   comments: CommentType[] = [];
+  userVotes: VoteType[] = []; // Aggiunto per gestire i voti dell'utente
 
   ngOnInit() {
     // Retrieve currentUser from localStorage
     const currentUserString = localStorage.getItem('currentUser');
     if (currentUserString) {
       this.currentUser = JSON.parse(currentUserString);
-      console.log('Current user loaded:', this.currentUser); // Debugging log
     } else {
       this.toastr.error('You must be logged in to vote on ideas');
       this.router.navigateByUrl('/login'); // Redirect to login if no user is logged in
@@ -65,6 +66,16 @@ export class IdeaDetailPageComponent {
           this.toastr.error('Error loading comments');
         }
       });
+
+      // Fetch user votes
+      this.restBackend.getVotesByUserId(this.currentUser?.id ?? 0).subscribe({
+        next: (votes) => {
+          this.userVotes = votes;
+        },
+        error: () => {
+          this.toastr.error('Error loading user votes');
+        }
+      });
     } else {
       this.toastr.error('Invalid idea ID');
       this.router.navigateByUrl('/home'); // Redirect to home if the idea ID is invalid
@@ -78,40 +89,102 @@ export class IdeaDetailPageComponent {
 
   upvote() {
     if (this.idea.id !== undefined && this.currentUser) {
-      const request: VoteRequest = {
+      const existingVote = this.getUserVote();
+      const request: VoteType = {
         IdeaId: this.idea.id,
-        UserId: this.currentUser.id, // Use the current user's ID
+        UserId: this.currentUser.id,
         vote: 1
       };
-      this.restBackend.voteIdea(request).subscribe({
-        next: () => {
-          this.toastr.success('Idea upvoted');
-          this.idea.totalUpvotes = (this.idea.totalUpvotes ?? 0) + 1;
-        },
-        error: () => {
-          this.toastr.error('Error upvoting idea');
+
+      if (existingVote) {
+        // Controlla se il voto esistente è già un "Upvote"
+        if (existingVote.vote === 1) {
+          this.toastr.info('You have already upvoted this idea');
+          return;
         }
-      });
+
+        // Cambia il voto se l'utente ha già votato ma non è un "Upvote"
+        this.restBackend.changeVote(request).subscribe({
+          next: () => {
+            this.toastr.success('Vote updated successfully');
+            if (existingVote.vote === -1) {
+              this.idea.totalDownvotes = (this.idea.totalDownvotes ?? 0) - 1;
+            }
+            this.idea.totalUpvotes = (this.idea.totalUpvotes ?? 0) + 1;
+            existingVote.vote = 1; // Aggiorna il voto localmente
+          },
+          error: () => {
+            this.toastr.error('Error updating vote');
+          }
+        });
+      } else {
+        // Crea un nuovo voto
+        this.restBackend.voteIdea(request).subscribe({
+          next: () => {
+            this.toastr.success('Idea upvoted');
+            this.idea.totalUpvotes = (this.idea.totalUpvotes ?? 0) + 1;
+            this.userVotes.push(request); // Aggiungi il nuovo voto localmente
+          },
+          error: () => {
+            this.toastr.error('Error upvoting idea');
+          }
+        });
+      }
+    } else {
+      this.toastr.error('You must be logged in to vote');
     }
   }
 
   downvote() {
     if (this.idea.id !== undefined && this.currentUser) {
-      const request: VoteRequest = {
+      const existingVote = this.getUserVote();
+      const request: VoteType = {
         IdeaId: this.idea.id,
-        UserId: this.currentUser.id, // Use the current user's ID
+        UserId: this.currentUser.id,
         vote: -1
       };
-      this.restBackend.voteIdea(request).subscribe({
-        next: () => {
-          this.toastr.success('Idea downvoted');
-          this.idea.totalDownvotes = (this.idea.totalDownvotes ?? 0) + 1;
-        },
-        error: () => {
-          this.toastr.error('Error downvoting idea');
+
+      if (existingVote) {
+        // Controlla se il voto esistente è già un "Downvote"
+        if (existingVote.vote === -1) {
+          this.toastr.info('You have already downvoted this idea');
+          return;
         }
-      });
+
+        // Cambia il voto se l'utente ha già votato ma non è un "Downvote"
+        this.restBackend.changeVote(request).subscribe({
+          next: () => {
+            this.toastr.success('Vote updated successfully');
+            if (existingVote.vote === 1) {
+              this.idea.totalUpvotes = (this.idea.totalUpvotes ?? 0) - 1;
+            }
+            this.idea.totalDownvotes = (this.idea.totalDownvotes ?? 0) + 1;
+            existingVote.vote = -1; // Aggiorna il voto localmente
+          },
+          error: () => {
+            this.toastr.error('Error updating vote');
+          }
+        });
+      } else {
+        // Crea un nuovo voto
+        this.restBackend.voteIdea(request).subscribe({
+          next: () => {
+            this.toastr.success('Idea downvoted');
+            this.idea.totalDownvotes = (this.idea.totalDownvotes ?? 0) + 1;
+            this.userVotes.push(request); // Aggiungi il nuovo voto localmente
+          },
+          error: () => {
+            this.toastr.error('Error downvoting idea');
+          }
+        });
+      }
+    } else {
+      this.toastr.error('You must be logged in to vote');
     }
+  }
+
+  getUserVote(): VoteType | undefined {
+    return this.userVotes.find(vote => vote.IdeaId === this.idea.id);
   }
 
   goBack() {

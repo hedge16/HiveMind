@@ -49,8 +49,18 @@ Idea.addScope('withVotes', {
       }
     ],
     group: ['Idea.id']
-  });
+});
 
+// Add a scope to include the user's firstname and lastname in comments
+Comment.addScope('withUserDetails', {
+  attributes: { include: ['id', 'content', 'createdAt', 'updatedAt'] },
+  include: [
+      {
+          model: User,
+          attributes: ['firstName', 'lastName']
+      }
+  ]
+});
 
 //synchronize schema (creates missing tables)
 database.sync().then( () => {

@@ -4,7 +4,7 @@ import { AuthRequest } from './auth-request.type';
 import { SignUpRequest } from './signup-request.type';
 import { SortingType } from './sorting.type';
 import { IdeaType } from './idea.type';
-import { VoteRequest } from './vote-request.type';
+import { VoteType } from './vote.type';
 import { LoginResponse, UserType } from './login-response.type';
 import { CommentType } from './comment.type';
 import { PagedIdeasType } from './paged-ideas-response.type';
@@ -23,7 +23,6 @@ export class RestBackendService {
   };
   sorting : SortingType = 'controversial';
   pageNumber = 1;
-  currentUser: UserType | null = null;
 
   login(loginRequest: AuthRequest){
     const url = `${this.url}/auth`; 
@@ -41,7 +40,7 @@ export class RestBackendService {
     return this.http.get<PagedIdeasType>(url, this.httpOptions);
   }
 
-  voteIdea(voteRequest : VoteRequest){
+  voteIdea(voteRequest : VoteType){
     const url = `${this.url}/vote`;
     return this.http.post(url, voteRequest, this.httpOptions);
   }
@@ -65,14 +64,22 @@ export class RestBackendService {
     const url = `${this.url}/idea/${ideaId}`;
     return this.http.get<IdeaType>(url, this.httpOptions);
   }
+
+  changeVote(vote: VoteType){
+    const url = `${this.url}/vote`;
+    return this.http.patch<VoteType>(url, vote, this.httpOptions);
+  }
+
+  getVotesByUserId(userId: number){
+    const url = `${this.url}/vote/user/${userId}`
+    return this.http.get<VoteType[]>(url, this.httpOptions);
+  }
   
   setUser(user: UserType) {
-    this.currentUser = user;
     localStorage.setItem('currentUser', JSON.stringify(user)); // Save user to localStorage
   }
 
   clearUser() {
-    this.currentUser = null;
     localStorage.removeItem('currentUser'); // Remove user from localStorage
   }
 }

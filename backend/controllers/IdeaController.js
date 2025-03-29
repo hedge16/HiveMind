@@ -74,11 +74,17 @@ export class IdeaController {
         }
 
         // Conta il numero totale di record
-        const totalRecords = await Idea.scope('withVotes').count({ where: whereCondition });
+        const totalRecords = await Idea.count({
+            where: whereCondition,
+            distinct: true, // Ensure it counts unique Idea IDs
+            col: 'id' // Specify the column to count
+        });
+        
 
         // Calcola il numero totale di pagine
         const totalPages = Math.ceil(totalRecords / limit);
 
+        
         // Recupera le idee per la pagina corrente
         const ideas = await Idea.scope('withVotes').findAll({
             where: whereCondition,
@@ -86,6 +92,7 @@ export class IdeaController {
             limit: limit,
             offset: offset
         });
+
 
         // Restituisci le idee e il numero totale di pagine
         return {

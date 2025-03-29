@@ -47,7 +47,14 @@ export class CommentSectionComponent {
       content: this.commentForm.value.content as string,
       UserId: userId, // Use userId from parsed currentUser
       IdeaId: Number(this.ideaId),
-      createdAt: new Date().toISOString() // Add a timestamp for the new comment
+      createdAt: new Date().toISOString(),
+      User: {
+        id: currentUser.id,
+        firstName: currentUser.firstName,
+        lastName: currentUser.lastName,
+        email: currentUser.email,
+        password: currentUser.password
+      }
     };
 
     console.log('Comment payload:', comment);

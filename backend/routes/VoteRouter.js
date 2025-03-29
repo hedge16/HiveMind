@@ -4,6 +4,7 @@ import { ensureUserDoesNotVoteForOwnIdea, ensureUserVotesOnlyOthersIdeasOnce } f
 
 export const voteRouter = express.Router();
 
+// Rotta per creare un voto
 voteRouter.post("/vote", ensureUserVotesOnlyOthersIdeasOnce, ensureUserDoesNotVoteForOwnIdea, (req, res, next) => {
     VoteController.createVote(req).then((vote) => {
         res.json({
@@ -20,6 +21,7 @@ voteRouter.post("/vote", ensureUserVotesOnlyOthersIdeasOnce, ensureUserDoesNotVo
     });
 });
 
+// Rotta per ottenere i voti di un'idea
 voteRouter.get("/vote/idea/:id", (req, res, next) => {
     VoteController.getVotesByIdeaId(req).then((votes) => {
         res.json(votes);
@@ -31,3 +33,36 @@ voteRouter.get("/vote/idea/:id", (req, res, next) => {
         });
     });
 });
+
+// Rotta per cambiare un voto
+voteRouter.patch("/vote", (req, res, next) => {
+    VoteController.changeVote(req).then((result) => {
+        res.json({
+            success: true,
+            message: result.message,
+            vote: result.vote
+        });
+    }).catch((error) => {
+        res.status(500);
+        res.json({
+            success: false,
+            message: "Failed to change vote",
+            error: error.message
+        });
+    });
+});
+
+// Rotta per ottenere tutti i voti di un utente
+voteRouter.get("/vote/user/:id", (req, res, next) => {
+    VoteController.getVotesByUserId(req).then((votes) => {
+        res.json(votes);
+    }).catch((error) => {
+        res.status(500);
+        res.json({
+            success: false,
+            message: "Failed to retrieve votes",
+            error: error.message
+        });
+    });
+});
+

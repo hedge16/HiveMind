@@ -9,7 +9,7 @@ export class CommentController {
     }
 
     static async getCommentsByIdeaId(req){
-        return Comment.findAll({
+        return Comment.scope('withUserDetails').findAll({
             where: {
                 IdeaId: req.params.id
             }

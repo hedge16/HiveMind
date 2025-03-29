@@ -28,5 +28,49 @@ export class VoteController {
             callback(error, null);
         });
     }
+
+    static async changeVote(req) {
+        const { UserId, IdeaId, vote } = req.body;
+
+        try {
+            // Trova il voto esistente
+            const existingVote = await Vote.findOne({
+                where: {
+                    UserId: UserId,
+                    IdeaId: IdeaId
+                }
+            });
+
+            if (existingVote) {
+                // Aggiorna il valore del voto
+                existingVote.vote = vote;
+                await existingVote.save();
+                return { message: 'Vote updated successfully', vote: existingVote };
+            } else {
+                // Se il voto non esiste, creane uno nuovo
+                const newVote = await Vote.create({ UserId, IdeaId, vote });
+                return { message: 'Vote created successfully', vote: newVote };
+            }
+        } catch (error) {
+            console.error('Error changing vote:', error);
+            throw new Error('Failed to change vote');
+        }
+    }
+
+    static async getVotesByUserId(req) {
+        const userId = req.params.id;
+    
+        try {
+            const votes = await Vote.findAll({
+                where: {
+                    UserId: userId
+                }
+            });
+            return votes;
+        } catch (error) {
+            console.error('Error retrieving votes for user:', error);
+            throw new Error('Failed to retrieve votes for user');
+        }
+    }
     
 }

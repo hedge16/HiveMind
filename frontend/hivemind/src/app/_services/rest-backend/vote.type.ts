@@ -1,4 +1,4 @@
-export interface VoteRequest {
+export interface VoteType {
     id?: number;
     UserId: number;
     IdeaId: number;

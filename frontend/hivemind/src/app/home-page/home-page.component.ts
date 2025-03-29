@@ -4,12 +4,12 @@ import { HeaderComponent } from '../header/header.component';
 import { FooterComponent } from '../footer/footer.component';
 import { RestBackendService } from '../_services/rest-backend/rest-backend.service';
 import { ToastrService } from 'ngx-toastr';
-import { Router } from '@angular/router';
 import { IdeaCardComponent } from '../idea-card/idea-card.component';
 import { IdeaType } from '../_services/rest-backend/idea.type';
 import { SortingType } from '../_services/rest-backend/sorting.type';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { VoteType } from '../_services/rest-backend/vote.type';
 
 @Component({
   selector: 'app-home-page',
@@ -26,8 +26,11 @@ export class HomePageComponent {
   currentPage: number = 1;
   totalPages: number[] = []; // Array per i numeri di pagina
 
+  userVotes: VoteType[] = [];
+
   ngOnInit() {
     this.loadIdeas();
+    this.loadUserVotes();
   }
 
   // Carica le idee per la pagina corrente
@@ -53,6 +56,21 @@ export class HomePageComponent {
   onSortingChange() {
     this.currentPage = 1; // Resetta alla prima pagina
     this.loadIdeas();
+  }
+
+  loadUserVotes() {
+    const currentUserString = localStorage.getItem('currentUser');
+    if (currentUserString) {
+      const currentUser = JSON.parse(currentUserString);
+      this.restBackend.getVotesByUserId(currentUser.id).subscribe(
+        (votes: VoteType[]) => {
+          this.userVotes = votes; // Salva i voti dell'utente
+        },
+        (error) => {
+          this.toastr.error('Error loading user votes');
+        }
+      );
+    }
   }
 }
 

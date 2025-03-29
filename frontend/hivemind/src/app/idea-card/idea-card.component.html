@@ -58,46 +58,48 @@
       @if (!isCreator()) {
         <!-- Upvote Button -->
         <button
-          (click)="upvote()"
-          class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-green-600 rounded-lg hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-500 dark:hover:bg-green-600 dark:focus:ring-green-800"
+        (click)="upvote()"
+        [ngClass]="{
+          'bg-green-700': getUserVote()?.vote === 1, 
+          'bg-gray-600': getUserVote()?.vote === -1, 
+          'bg-green-600': getUserVote()?.vote == null
+        }"
+        class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800"
         >
-          <span class="hidden sm:block">Upvote</span>
-          <svg
-            class="w-4 h-4 sm:ml-2"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M5 15l7-7 7 7"
-            ></path>
-          </svg>
+        <span class="hidden sm:block">Upvote</span>
+        <svg
+          class="w-4 h-4 sm:ml-2"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7"></path>
+        </svg>
         </button>
 
         <!-- Downvote Button -->
         <button
-          (click)="downvote()"
-          class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-800"
+        (click)="downvote()"
+        [ngClass]="{
+          'bg-red-700': getUserVote()?.vote === -1, 
+          'bg-gray-600': getUserVote()?.vote === 1, 
+          'bg-red-600': getUserVote()?.vote == null
+        }"
+        class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800"
         >
-          <span class="hidden sm:block">Downvote</span>
-          <svg
-            class="w-4 h-4 sm:ml-2"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M19 9l-7 7-7-7"
-            ></path>
-          </svg>
+        <span class="hidden sm:block">Downvote</span>
+        <svg
+          class="w-4 h-4 sm:ml-2"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
+        </svg>
         </button>
       }
 
