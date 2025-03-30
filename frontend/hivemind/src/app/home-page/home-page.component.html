@@ -24,9 +24,19 @@
 
     <!-- Ideas Section -->
     <section class="flex flex-col flex-1">
+      <!----
       <div class="grid grid-cols-2 gap-3">
         @for (idea of displayedIdeas; track idea) {
           <app-idea-card [idea]="idea" [userVotes]="userVotes"></app-idea-card>
+        }
+      </div>
+      <--->
+
+      <div class="grid grid-cols-2 gap-1">
+        @for (idea of displayedIdeas; track idea) {
+          <div class="p-4 rounded-lg even:bg-gray-100 odd:bg-white">
+            <app-idea-card [idea]="idea" [userVotes]="userVotes"></app-idea-card>
+          </div>
         }
       </div>
 

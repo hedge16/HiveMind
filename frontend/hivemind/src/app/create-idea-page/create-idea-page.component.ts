@@ -14,14 +14,18 @@ import { ToastrService } from 'ngx-toastr';
   styleUrl: './create-idea-page.component.scss'
 })
 export class CreateIdeaPageComponent {
+
   ideaForm = new FormGroup({
     title: new FormControl('', [Validators.required]),
-    description: new FormControl('', [Validators.required])
+    description: new FormControl('', [Validators.required, Validators.maxLength(400)])
   });
 
   restBackendService = inject(RestBackendService);
   toastr = inject(ToastrService);
   router = inject(Router);
+  charCount: number = 0;
+
+  
 
   onSubmit() {
     if (this.ideaForm.invalid) {
@@ -51,5 +55,8 @@ export class CreateIdeaPageComponent {
         this.toastr.error('Failed to create idea');
       }
     });
+  }
+  updateCharCount(): void {
+    this.charCount = this.ideaForm?.get('description')?.value?.length || 0;
   }
 }

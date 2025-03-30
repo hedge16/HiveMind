@@ -1,0 +1,9 @@
+.grid > *:nth-child(4n+1),
+.grid > *:nth-child(4n+2) {
+  background-color: white;
+}
+
+.grid > *:nth-child(4n+3),
+.grid > *:nth-child(4n+4) {
+  background-color: #f3f4f6; /* Tailwind gray-100 */
+}

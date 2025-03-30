@@ -24,15 +24,21 @@
 
         <!-- Description Field -->
         <div>
-          <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Description</label>
+          <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+            Description: {{ charCount }}/400
+          </label>
           <textarea
             id="description"
             formControlName="description"
             required
             rows="4"
+            (input)="updateCharCount()"
             class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
             placeholder="Describe your idea"
+            maxlength="400"
           ></textarea>
+
+
           @if (ideaForm.get('description')?.invalid && ideaForm.get('description')?.touched) {
             <div class="text-red-500 text-sm">Description is required.</div>
           }
