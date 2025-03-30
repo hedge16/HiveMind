@@ -1,47 +1,51 @@
-<app-header></app-header>
-<app-navbar></app-navbar>
-<main class="container mx-auto px-4 py-8 space-y-12">
-  <!-- Sorting Control -->
-  <section class="flex justify-between items-center mb-6">
-    <h2 class="text-2xl font-bold text-gray-800 dark:text-white">Ideas</h2>
-    <div>
-      <label for="sorting" class="text-sm font-medium text-gray-700 dark:text-gray-300 mr-2">Sort by:</label>
-      <select
-        id="sorting"
-        [(ngModel)]="selectedSorting"
-        (change)="onSortingChange()"
-        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
-      >
-        <option value="controversial">Controversial</option>
-        <option value="mainstream">Mainstream</option>
-        <option value="unpopular">Unpopular</option>
-        <option value="newest">Newest</option>
-      </select>
-    </div>
-  </section>
+<body class="min-h-screen flex flex-col">
+  <app-header></app-header>
+  <app-navbar></app-navbar>
+  
+  <main class="container mx-auto px-4 py-8 space-y-12 flex-1 flex flex-col">
+    <!-- Sorting Control -->
+    <section class="flex justify-between items-center mb-6">
+      <h2 class="text-2xl font-bold text-gray-800 dark:text-white">Ideas</h2>
+      <div>
+        <label for="sorting" class="text-sm font-medium text-gray-700 dark:text-gray-300 mr-2">Sort by:</label>
+        <select
+          id="sorting"
+          [(ngModel)]="selectedSorting"
+          (change)="onSortingChange()"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+        >
+          <option value="controversial">Controversial</option>
+          <option value="mainstream">Mainstream</option>
+          <option value="unpopular">Unpopular</option>
+          <option value="newest">Newest</option>
+        </select>
+      </div>
+    </section>
 
-  <!-- Ideas Section -->
-  <section>
-    <div class="grid grid-cols-2 gap-3">
-      @for (idea of displayedIdeas; track idea) {
-        <app-idea-card [idea]="idea" [userVotes]="userVotes"></app-idea-card>
-      }
-    </div>
+    <!-- Ideas Section -->
+    <section class="flex flex-col flex-1">
+      <div class="grid grid-cols-2 gap-3">
+        @for (idea of displayedIdeas; track idea) {
+          <app-idea-card [idea]="idea" [userVotes]="userVotes"></app-idea-card>
+        }
+      </div>
 
-    <!-- Pagination Controls -->
-    <div class="flex justify-start mt-6 space-x-2"> 
-      <button
-        *ngFor="let page of totalPages; let i = index"
-        (click)="changePage(i + 1)"
-        [class.bg-indigo-600]="currentPage === i + 1"
-        [class.text-white]="currentPage === i + 1"
-        [class.bg-gray-200]="currentPage !== i + 1"
-        [class.text-gray-800]="currentPage !== i + 1"
-        class="py-2 px-4 rounded-md hover:bg-indigo-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-      >
-        {{ i + 1 }}
-      </button>
-    </div>
-  </section>
-</main>
-<app-footer></app-footer>
+      <!-- Pagination Controls -->
+      <div class="flex justify-start mt-auto space-x-2 pt-4"> 
+        <button
+          *ngFor="let page of totalPages; let i = index"
+          (click)="changePage(i + 1)"
+          [class.bg-indigo-600]="currentPage === i + 1"
+          [class.text-white]="currentPage === i + 1"
+          [class.bg-gray-200]="currentPage !== i + 1"
+          [class.text-gray-800]="currentPage !== i + 1"
+          class="py-2 px-4 rounded-md hover:bg-indigo-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+        >
+          {{ i + 1 }}
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <app-footer></app-footer>
+</body>
