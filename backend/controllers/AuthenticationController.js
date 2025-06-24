@@ -9,25 +9,22 @@ export class AuthController {
    * @param {http.IncomingMessage} request 
    * @param {http.ServerResponse} response 
    */
-  static async checkCredentials(req, res) {
-    let user = await User.findOne({
-      where: {
-        email: req.body.email
-      }
+  static async checkCredentials(req) {
+    const user = await User.findOne({
+      where: { email: req.body.email }
     });
 
     if (!user) {
-      return res.status(401).json({ message: "User not found" }); // Se l'utente non esiste
+      return null; // Nessuna risposta qui!
     }
 
-    // Confronta la password fornita con quella hashata nel database
     const isPasswordValid = await bcrypt.compare(req.body.password, user.password);
-    
+
     if (!isPasswordValid) {
-      return res.status(401).json({ message: "Invalid password" }); // Se la password è errata
+      return null; // Nessuna risposta qui!
     }
 
-    return true; // Se la password è corretta, ritorna `true`
+    return user; // Restituisci l'utente se tutto è ok
   }
 
   /**

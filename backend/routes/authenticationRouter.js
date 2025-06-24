@@ -56,15 +56,14 @@ export const authenticationRouter = express.Router();
  */
 authenticationRouter.post("/auth", async (req, res) => {
   try {
-    const isAuthenticated = await AuthController.checkCredentials(req, res);
-    if (isAuthenticated) {
-      const token = AuthController.issueToken(req.body.email);
-      const user = await AuthController.getUserByEmail(req.body.email); // Recupera i dati dell'utente
-      res.json({ token, user }); // Risponde con il token e i dati dell'utente
+    const user = await AuthController.checkCredentials(req);
+    if (user) {
+      const token = AuthController.issueToken(user.email);
+      res.json({ token, user });
     } else {
       res.status(401).json({ error: "Invalid credentials. Try again." });
     }
-  } catch (error) {
+  } catch (error) { 
     res.status(500).json({ error: "An error occurred during authentication." });
   }
 });
